@@ -20,10 +20,12 @@
             }
         }
 
-        public function bind_and_execute(array $parameters = []) {
-            foreach($parameters as $key => $val) {
-                if ($this->statement->bindValue($key, $val) === FALSE) {
-                    die("Binding parameters failed: ".$this->statement->errorInfo()[2]);
+        public function bind_and_execute(?array $parameters = []) {
+            if(isset($parameters)) {
+                foreach($parameters as $key => $val) {
+                    if ($this->statement->bindValue($key, $val) === FALSE) {
+                        die("Binding parameters failed: ".$this->statement->errorInfo()[2]);
+                    }
                 }
             }
             if($this->statement->execute() === FALSE) {
