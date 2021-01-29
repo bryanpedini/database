@@ -20,10 +20,12 @@
             }
         }
 
-        public function bind_and_execute(?array $parameters = []) {
+        public function bind_and_execute(?array $parameters = [], ?array $paramtypes = []) {
             if(isset($parameters)) {
                 foreach($parameters as $key => $val) {
-                    if ($this->statement->bindValue($key, $val) === FALSE) {
+                    $paramtype = PDO::PARAM_STR;
+                    if(array_key_exists($key, $paramtypes)) $paramtype = $paramtypes[$key];
+                    if ($this->statement->bindValue($key, $val, $paramtype) === FALSE) {
                         die("Binding parameters failed: ".$this->statement->errorInfo()[2]);
                     }
                 }
